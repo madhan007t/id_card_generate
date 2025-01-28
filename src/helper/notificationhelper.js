@@ -8,3 +8,5 @@ export const SUCCESS_NOTIFICATION = (success_message) => {
 export const ERROR_NOTIFICATION = (error_message) => {
   return notification.error({ message: _.get(error_message, "response.data.message", "") });
 };
+
+export const admintoken = "admin_token";

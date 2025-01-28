@@ -11,6 +11,7 @@ const Register = () => {
   const handleClick = async (values) => {
     try {
       const result = await addregister(values);
+      console.log(result);
 
       SUCCESS_NOTIFICATION(result);
       form.resetFields();
