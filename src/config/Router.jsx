@@ -6,6 +6,7 @@ import Single from "../Pages/Single/Single";
 import Template from "../Pages/Template/Template";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
+import Orders from "../Pages/Orders/Orders";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,11 @@ const router = createBrowserRouter([
     path: "/template",
     element: <Layout />,
     children: [{ path: "/template", element: <Template /> }],
+  },
+  {
+    path: "/orders",
+    element: <Layout />,
+    children: [{ path: "/orders", element: <Orders /> }],
   },
 ]);
 

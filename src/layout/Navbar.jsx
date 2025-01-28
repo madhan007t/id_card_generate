@@ -1,13 +1,35 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { navbarItems } from "../helper/datahelper";
+import { checklogin } from "../api";
+import { useDispatch } from "react-redux";
+import { isLoginSuccess } from "../redux/Slice/authslice";
+import _ from "lodash";
+import { admintoken } from "../helper/notificationhelper";
 
 const Navbar = () => {
   const [activeItem, setActiveItem] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  console.log(navbarItems);
+  const fetchdata = async () => {
+    try {
+      const result = await checklogin();
+      const data = _.get(result, "data.data", "");
+      dispatch(isLoginSuccess(data));
+      if (_.isEmpty(data)) {
+        localStorage.removeItem(admintoken);
+        return navigate("/");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
+  useEffect(() => {
+    fetchdata();
+  }, []);
   return (
     <div className="bg-purple-50 w-[100px] h-screen flex flex-col items-center py-4 space-y-6">
       {navbarItems.map((item) => {
