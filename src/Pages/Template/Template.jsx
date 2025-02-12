@@ -1,94 +1,45 @@
-import React, { useState, useEffect } from "react";
-import { Card, Skeleton } from "antd";
+import React, { useState } from "react";
+import { templates } from "../../helper/datahelper";
+import { Modal } from "antd";
 
 const Template = () => {
-  const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => setLoading(false), 2000); // Simulate loading for 2 seconds
-    return () => clearTimeout(timeout);
-  }, []);
+  const openModal = (template) => {
+    setSelectedTemplate(template);
+    setIsModalOpen(true);
+  };
 
-  const templates = [
-    {
-      id: 1,
-      name: "John Doe",
-      position: "Software Engineer",
-      bloodGroup: "B+",
-      phone: "+123456789",
-      company: "Tech Corp",
-      image: "https://via.placeholder.com/100",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      position: "Project Manager",
-      bloodGroup: "O+",
-      phone: "+987654321",
-      company: "Tech Solutions",
-      image: "https://via.placeholder.com/100",
-    },
-    {
-      id: 3,
-      name: "Alan Brown",
-      position: "UI/UX Designer",
-      bloodGroup: "A-",
-      phone: "+456123789",
-      company: "Creative Studio",
-      image: "https://via.placeholder.com/100",
-    },
-    {
-      id: 4,
-      name: "Emily Clark",
-      position: "Marketing Lead",
-      bloodGroup: "AB+",
-      phone: "+789123456",
-      company: "Market Innovators",
-      image: "https://via.placeholder.com/100",
-    },
-    {
-      id: 5,
-      name: "Michael Lee",
-      position: "Data Scientist",
-      bloodGroup: "B-",
-      phone: "+321456987",
-      company: "Data Insights",
-      image: "https://via.placeholder.com/100",
-    },
-    {
-      id: 6,
-      name: "Sophia Green",
-      position: "HR Manager",
-      bloodGroup: "O-",
-      phone: "+654987123",
-      company: "People First",
-      image: "https://via.placeholder.com/100",
-    },
-  ];
+  const openImageModal = (template) => {
+    setSelectedTemplate(template);
+    setIsImageModalOpen(true);
+  };
 
   return (
-    <div className="flex flex-wrap justify-center gap-6 p-6 bg-gray-100">
-      {templates.map((template, index) => (
-        <Card key={template.id} className="w-80 shadow-lg" hoverable cover={loading ? <Skeleton.Image active /> : <img alt="employee" src={template.image} className="w-full h-40 object-cover" />}>
-          {loading ? (
-            <Skeleton loading={loading} active paragraph={{ rows: 3 }} />
-          ) : (
-            <div>
-              <h2 className={`text-lg font-bold ${index % 2 === 0 ? "text-blue-600" : "text-green-600"}`}>{template.company}</h2>
-              <p className="text-md font-semibold text-gray-700">{template.name}</p>
-              <p className="text-sm text-gray-600">{template.position}</p>
-              <div className="mt-3">
-                <p className="text-sm text-gray-600">
-                  <strong>Blood Group:</strong> {template.bloodGroup}
-                </p>
-                <p className="text-sm text-gray-600">
-                  <strong>Phone:</strong> {template.phone}
-                </p>
-              </div>
-            </div>
-          )}
-        </Card>
-      ))}
+    <div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+        {templates.map((template) => (
+          <div key={template.id} className="relative p-2 bg-white h-[350px] border shadow-lg rounded-lg cursor-pointer hover:opacity-50  " onClick={() => openImageModal(template)}>
+            <img src={template.image} alt={template.id} className="w-full h-[300px]   rounded-md" />
+            <div className="absolute bottom-2 left-2 bg-black text-white px-2 py-1 text-xs rounded">{template.id}</div>
+            <button
+              type="primary"
+              className="absolute bottom-2 right-2 p-1 rounded-sm px-4 font-bold text-white  text-xs bg-secondary hover:bg-primary"
+              onClick={(e) => {
+                e.stopPropagation();
+                openModal(template);
+              }}
+            >
+              Generate
+            </button>
+          </div>
+        ))}
+      </div>
+      <Modal title={selectedTemplate?.id || "Template Image"} open={isImageModalOpen} onCancel={() => setIsImageModalOpen(false)} footer={null}>
+        {selectedTemplate && <img src={selectedTemplate.image} alt="Template" className="w-full rounded-md" />}
+      </Modal>
     </div>
   );
 };
