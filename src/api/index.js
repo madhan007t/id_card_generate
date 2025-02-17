@@ -26,3 +26,5 @@ export const uploadImage = async (formdata) => await custom_request.post(`${UPLO
 
 export const addSingle = async (formdata) => await custom_request.post(`${BASE_URL}/single/add_single`, formdata);
 export const getSingle = async () => await custom_request.get(`${BASE_URL}/single/get_all`);
+
+export const deleteidcard = async (id) => await custom_request.delete(`${BASE_URL}/single/delete_id/${id}`);

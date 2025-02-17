@@ -13,30 +13,36 @@ const Layout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const fetchdata = async () => {
-    try {
-      const result = await checklogin();
-      const data = _.get(result, "data.data", "");
-      dispatch(isLoginSuccess(data));
-      if (_.isEmpty(data)) {
-        localStorage.removeItem(admintoken);
-        return navigate("/");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        const result = await checklogin();
+        const data = _.get(result, "data.data", "");
+
+        if (_.isEmpty(data)) {
+          localStorage.removeItem(admintoken);
+          navigate("/"); // Redirect if not logged in
+        } else {
+          dispatch(isLoginSuccess(data)); // Set login state
+        }
+      } catch (err) {
+        console.error("Login check failed:", err);
+      }
+    };
+
     fetchdata();
-  }, []);
+  }, [navigate, dispatch]); // Added dependencies to prevent unwanted re-renders
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <TopNavbar />
+    <div className="flex flex-col min-h-screen relative">
+      <div className="sticky top-0 z-50">
+        <TopNavbar />
+      </div>
 
-      <div className="flex flex-1">
-        <Navbar />
+      <div className="flex flex-1 overflow-visible">
+        <div className="sticky top-[65px] z-50 h-[60px] bg-white shadow-md">
+          <Navbar />
+        </div>
 
         <div className="flex-1 p-4">
           <Outlet />

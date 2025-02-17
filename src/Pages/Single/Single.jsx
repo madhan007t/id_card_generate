@@ -42,10 +42,10 @@ const Single = () => {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">ID Card Generator</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4">
         {templates.map((template) => (
           <div key={template.id} className="relative p-2 bg-white h-[350px] border shadow-lg rounded-lg cursor-pointer " onClick={() => openModal(template)}>
-            <img src={template.image} alt={template.id} className="w-full h-[300px] rounded-md" />
+            <img src={template.image} alt={template.id} className="w-full h-[300px] rounded-md object-contain" />
             <div className="absolute bottom-2 left-2 bg-black text-white px-2 py-1 text-xs rounded">{template.id}</div>
             <button
               className="absolute bottom-2 right-2 p-1 rounded-sm px-4 font-bold text-white text-xs bg-secondary hover:bg-primary"
@@ -63,6 +63,10 @@ const Single = () => {
       <Drawer title="Enter Details" open={isModalOpen} onClose={() => setIsModalOpen(false)} footer={null} width="100vw">
         <Form form={form} layout="vertical" onFinish={handleFinish}>
           <div className="grid grid-cols-2 gap-4">
+            <Form.Item label="title" name="title" rules={[{ required: true, message: "Please enter your title!" }]}>
+              <Input placeholder="title" className="h-[50px] w-full" />
+            </Form.Item>
+
             <Form.Item label="Name" name="name" rules={[{ required: true, message: "Please enter your name!" }]}>
               <Input placeholder="Name" className="h-[50px] w-full" />
             </Form.Item>

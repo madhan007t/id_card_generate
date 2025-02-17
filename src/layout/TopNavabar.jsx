@@ -40,12 +40,14 @@ const TopNavbar = () => {
           </div>
         ) : (
           <>
-            <Button onClick={() => navigate("/login")} className="px-4 rounded-lg font-bold">
-              Login
-            </Button>
-            <Button onClick={() => navigate("/register")} className="px-4 rounded-lg font-bold">
-              Sign Up
-            </Button>
+            <div className="flex gap-4">
+              <Button onClick={() => navigate("/login")} className="px-4 rounded-lg font-bold">
+                Login
+              </Button>
+              <Button onClick={() => navigate("/register")} className="px-4 rounded-lg font-bold">
+                Sign Up
+              </Button>
+            </div>
           </>
         )}
       </div>
